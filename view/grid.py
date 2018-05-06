@@ -1,5 +1,6 @@
 from view.button import ButtonFrame
 import tkinter as tk
+import tkinter.font as font
 
 
 class GridFrame(tk.Frame):
@@ -21,9 +22,15 @@ class GridFrame(tk.Frame):
         for i, row in enumerate(self.board):
             for j, tile in enumerate(row):
 
-                b = tk.Button(self, textvariable=self.vars[j][i],
+                b = tk.Button(self,
+                              textvariable=self.vars[j][i],
+                              justify="center",
+                              font=('helvetica', 16),
+                              # padx=2, pady=2,
                               command=lambda l=[j, i]: self.move(l))
-                b.grid(row=i, column=j)
+                b.grid(
+                    row=i, column=j,
+                )
 
     def move(self, l):
         v = self.controller.movable(l)
