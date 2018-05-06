@@ -1,8 +1,9 @@
 import tkinter as tk
-from lib.game import Game
+from controller.controller import Controller
 from view.quit import QuitFrame
 from view.message import MessageFrame
 from view.button import ButtonFrame
+from view.grid import GridFrame
 
 
 class App(tk.Frame):
@@ -12,11 +13,12 @@ class App(tk.Frame):
         self.pack()
 
         master.title("Game of 15")
-        var = tk.StringVar()
-        var.set("hello")
-        m = MessageFrame(var)
 
-        ButtonFrame("press me!", lambda: m.updateMessage("world"))
+        c = Controller()
+        counterVar = tk.StringVar()
+        MessageFrame(counterVar)
+        GridFrame(c, counterVar)
+        # ButtonFrame("press me!", lambda: m.updateMessage("world"))
         QuitFrame()
 
         master.lift()
