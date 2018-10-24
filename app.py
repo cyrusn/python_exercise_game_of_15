@@ -1,9 +1,13 @@
+#!/usr/local/bin/python3
+
 from tkinter import Tk, Frame, Label, CENTER, font
 from game import Game
 
-SIZE = 500
+# LABEL_WIDTH and LABEL_HEIGHT is in characters (not in pixels)
+LABEL_WIDTH = 4
+LABEL_HEIGHT = 2
 GRID_LEN = 4
-GRID_PADDING = 10
+GRID_PADDING = 8
 BACKGROUND_COLOR_GAME = "#91959B"
 BACKGROUND_COLOR_CELL = "#FFFFFF"
 FONT_COLOR = '#282C34'
@@ -62,9 +66,7 @@ class App(Frame):
     def init_grid(self):
         background = Frame(
             self,
-            bg=BACKGROUND_COLOR_GAME,
-            width=SIZE,
-            height=SIZE
+            bg=BACKGROUND_COLOR_GAME
         )
         background.grid()
 
@@ -73,8 +75,12 @@ class App(Frame):
             for col in range(GRID_LEN):
                 cell = Label(
                     master=background,
-                    width=SIZE//GRID_LEN,
-                    height=SIZE//GRID_LEN
+                    text='',
+                    bg=BACKGROUND_COLOR_CELL,
+                    justify=CENTER,
+                    font=FONT,
+                    width=LABEL_WIDTH,
+                    height=LABEL_HEIGHT
                 )
                 cell.grid(
                     column=col,
@@ -82,16 +88,8 @@ class App(Frame):
                     padx=GRID_PADDING,
                     pady=GRID_PADDING
                 )
-                t = Label(
-                    master=cell,
-                    text='',
-                    bg=BACKGROUND_COLOR_CELL,
-                    justify=CENTER,
-                    font=FONT,
-                    width=4, height=2
-                )
-                t.grid()
-                row_cells.append(t)
+
+                row_cells.append(cell)
             self.grid_cells.append(row_cells)
 
     def update_grid(self):

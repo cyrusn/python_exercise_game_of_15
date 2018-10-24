@@ -19,19 +19,45 @@ Write a traditional game call "Game of 15" in python.
 
 To update value in button or label, you have to use textvariable option and use `tk.StrinVar()` or `tk.IntVar()`
 
+Another method to update a label by using .configure on label instance.
+
 ``` python
-# example
+# example on textvariable
 from tkinter import *
+from time import sleep
 
 root = Tk()
 var = StringVar()
-var.set('hello')
+var.set('Hello World')
 
 l = Label(root, textvariable = var)
 l.pack()
 
-t = Entry(root, textvariable = var)
-t.pack()
+sleep(2)
+
+var.set('Hello! World.')
 
 root.mainloop() # the window is now displayed
+```
+
+
+``` python
+# example on using configure method
+from tkinter import *
+from time import sleep
+
+root = Tk()
+
+l = Label(root, text='Hello World')
+l.grid()
+
+sleep(2)
+
+l.configure(text='hello! World.')
+t.grid()
+
+root.mainloop() # the window is now displayed
+
+
+
 ```
