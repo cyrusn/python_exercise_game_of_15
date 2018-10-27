@@ -21,15 +21,14 @@ KEY_RIGHT = 'Right'
 KEY_LEFT = 'Left'
 
 
-class App(Frame):
+class App:
 
-    def __init__(self, master):
+    def __init__(self):
         super(App, self).__init__()
-        self.pack()
-        self.master = master
+        self.master = Tk()
         self.game = Game()
         self.commands = {
-            KEY_QUIT: self.quit,
+            KEY_QUIT: self.master.quit,
             KEY_RESET: self.game.reset,
             KEY_UP: self.game.move_up,
             KEY_DOWN: self.game.move_down,
@@ -43,6 +42,9 @@ class App(Frame):
 
         self.window_appearence_setting()
         self.create_key_event()
+
+    def run(self):
+        self.master.mainloop()
 
     def create_key_event(self):
         self.master.bind("<Key>", self.listen_key)
@@ -58,14 +60,14 @@ class App(Frame):
     def init_counter_label(self):
         label_font = font.Font(family='Helvetica', size=24, weight='bold')
         self.label = Label(
-            self,
+            master=self.master,
             font=label_font
         )
         self.label.grid()
 
     def init_grid(self):
         background = Frame(
-            self,
+            master=self.master,
             bg=BACKGROUND_COLOR_GAME
         )
         background.grid()
@@ -114,6 +116,6 @@ class App(Frame):
         self.master.attributes('-topmost', True)
 
 
-root = Tk()
-app = App(root)
-root.mainloop()
+if __name__ == '__main__':
+    app = App()
+    app.run()
