@@ -5,8 +5,8 @@ class Game:
         self.goal[3][3] = 0
 
     def _swap(self, nx=None, ny=None):
-        nx = self.x if nx == None else nx
-        ny = self.y if ny == None else ny
+        nx = self.x if nx is None else nx
+        ny = self.y if ny is None else ny
         x = self.x
         y = self.y
         self.board[y][x], self.board[ny][nx] = self.board[ny][nx], self.board[y][x]
