@@ -3,53 +3,55 @@
 from tkinter import Tk, Frame, Label, CENTER, font
 from game import Game
 
-# LABEL_WIDTH and LABEL_HEIGHT is in characters (not in pixels)
-LABEL_WIDTH = 4
-LABEL_HEIGHT = 2
-GRID_LEN = 4
-GRID_PADDING = 8
-BACKGROUND_COLOR_GAME = "#91959B"
-BACKGROUND_COLOR_CELL = "#FFFFFF"
-FONT_COLOR = '#282C34'
-FONT = ("Verdana", 40, "bold")
-
-KEY_QUIT = 'q'
-KEY_RESET = 'r'
-KEY_UP = 'Up'
-KEY_DOWN = 'Down'
-KEY_RIGHT = 'Right'
-KEY_LEFT = 'Left'
-
 
 class App:
+    # LABEL_WIDTH and LABEL_HEIGHT is in characters (not in pixels)
+    LABEL_WIDTH = 4
+    LABEL_HEIGHT = 2
+    GRID_LEN = 4
+    GRID_PADDING = 8
+    FONT_SIZE = 40
+    FONT = ("Verdana", FONT_SIZE, "bold")
 
-    def __init__(self):
+    BACKGROUND_COLOR_GAME = "#91959B"
+    BACKGROUND_COLOR_CELL = "#FFFFFF"
+    FONT_COLOR = "#282C34"
+
+    KEY_QUIT = "q"
+    KEY_RESET = "r"
+    KEY_UP = "Up"
+    KEY_DOWN = "Down"
+    KEY_RIGHT = "Right"
+    KEY_LEFT = "Left"
+
+    def __init__(self, font=FONT):
         super(App, self).__init__()
-        self.master = Tk()
+        self.font = font
+        self.Tk = Tk()
         self.game = Game()
         self.commands = {
-            KEY_QUIT: self.master.quit,
-            KEY_RESET: self.game.reset,
-            KEY_UP: self.game.move_up,
-            KEY_DOWN: self.game.move_down,
-            KEY_RIGHT: self.game.move_right,
-            KEY_LEFT: self.game.move_left
+            App.KEY_QUIT: self.Tk.quit,
+            App.KEY_RESET: self.game.reset,
+            App.KEY_UP: self.game.move_up,
+            App.KEY_DOWN: self.game.move_down,
+            App.KEY_RIGHT: self.game.move_right,
+            App.KEY_LEFT: self.game.move_left,
         }
         self.grid_cells = []
         self.init_grid()
         self.init_counter_label()
         self.update_grid()
 
-        self.window_appearence_setting()
-        self.create_key_event()
+        self.window_appearance_setting()
+        self.register_key_event()
 
     def run(self):
-        self.master.mainloop()
+        self.Tk.mainloop()
 
-    def create_key_event(self):
-        self.master.bind("<Key>", self.listen_key)
+    def register_key_event(self):
+        self.Tk.bind("<Key>", self.handle_key)
 
-    def listen_key(self, e):
+    def handle_key(self, e):
         if e.char in self.commands:
             self.commands[e.char]()
 
@@ -58,64 +60,53 @@ class App:
             self.update_grid()
 
     def init_counter_label(self):
-        label_font = font.Font(family='Helvetica', size=24, weight='bold')
-        self.label = Label(
-            master=self.master,
-            font=label_font
-        )
+        label_font = font.Font(family="Helvetica", size=24, weight="bold")
+        self.label = Label(master=self.Tk, font=label_font)
         self.label.grid()
 
     def init_grid(self):
-        background = Frame(
-            master=self.master,
-            bg=BACKGROUND_COLOR_GAME
-        )
+        background = Frame(master=self.Tk, bg=App.BACKGROUND_COLOR_GAME)
         background.grid()
 
-        for row in range(GRID_LEN):
+        for row in range(App.GRID_LEN):
             row_cells = []
-            for col in range(GRID_LEN):
+            for col in range(App.GRID_LEN):
                 cell = Label(
                     master=background,
-                    text='',
-                    bg=BACKGROUND_COLOR_CELL,
+                    text="",
+                    bg=App.BACKGROUND_COLOR_CELL,
                     justify=CENTER,
-                    font=FONT,
-                    width=LABEL_WIDTH,
-                    height=LABEL_HEIGHT
+                    font=self.font,
+                    width=App.LABEL_WIDTH,
+                    height=App.LABEL_HEIGHT,
                 )
                 cell.grid(
-                    column=col,
-                    row=row,
-                    padx=GRID_PADDING,
-                    pady=GRID_PADDING
+                    column=col, row=row, padx=App.GRID_PADDING, pady=App.GRID_PADDING
                 )
 
                 row_cells.append(cell)
             self.grid_cells.append(row_cells)
 
     def update_grid(self):
-        for i in range(GRID_LEN):
-            for j in range(GRID_LEN):
+        for i in range(App.GRID_LEN):
+            for j in range(App.GRID_LEN):
                 cell_value = self.game.board[j][i]
                 self.grid_cells[j][i].configure(
-                    text="{}".format(
-                        cell_value if cell_value != 0 else ''
-                    ),
-                    fg=FONT_COLOR
+                    text="{}".format(cell_value if cell_value != 0 else ""),
+                    fg=App.FONT_COLOR,
                 )
         if self.game.win:
             self.label.configure(
-                text='You win, total steps: {}'.format(self.game.counter))
+                text="You win, total steps: {}".format(self.game.counter)
+            )
         else:
-            self.label.configure(text='Step: {}'.format(self.game.counter))
+            self.label.configure(text="Step: {}".format(self.game.counter))
 
-    def window_appearence_setting(self):
-        self.master.title("Game of 15")
-        self.master.lift()
-        self.master.attributes('-topmost', True)
+    def window_appearance_setting(self):
+        self.Tk.title("Game of 15")
+        self.Tk.lift()
+        self.Tk.attributes("-topmost", True)
 
 
-if __name__ == '__main__':
-    app = App()
-    app.run()
+if __name__ == "__main__":
+    App().run()
